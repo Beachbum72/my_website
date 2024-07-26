@@ -1,25 +1,19 @@
 - name: Deploy Personal Website
-  hosts: webserver
+  hosts: nycgeek.social
   become: yes
-
   tasks:
-    - name: Ensure Apache is installed
-      apt:
-        name: apache2
-        state: present
-        update_cache: yes
-
-    - name: Ensure Apache is running
-      service:
-        name: apache2
-        state: started
-        enabled: yes
-
-    - name: Deploy website files
-      copy:
-        src: ./my_website/
-        dest: /var/www/html/
+    - name: Ensure the destination directory exists
+      file:
+        path: /var/www/html/
+        state: directory
         owner: www-data
         group: www-data
-        mode: '0644'
-        recurse: yes
+        mode: '0755'
+
+    - name: Deploy website files
+      synchronize:
+        src: ./my_website/
+        dest: /var/www/html/
+        rsync_opts:
+          - "--chown=www-data:www-data"
+      delegate_to: localhost
