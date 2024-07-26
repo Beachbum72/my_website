@@ -11,10 +11,10 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: 3.x
 
@@ -24,7 +24,7 @@ jobs:
           pip install ansible
 
       - name: Run Ansible Playbook
-        run: ansible-playbook -i inventory.ini deploy.yml
+        run: ansible-playbook -i inventory.ini deploy.yml -vvv
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'False'
           ANSIBLE_REMOTE_USER: ${{ secrets.ANSIBLE_REMOTE_USER }}
