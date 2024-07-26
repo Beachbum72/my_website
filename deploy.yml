@@ -1,0 +1,25 @@
+name: Deploy Personal Website
+hosts: webserver
+become: yes
+
+  tasks:
+    - name: Ensure Apache is installed
+      apt:
+        name: apache2
+        state: present
+        update_cache: yes
+
+    - name: Ensure Apache is running
+      service:
+        name: apache2
+        state: started
+        enabled: yes
+
+    - name: Deploy website files
+      copy:
+        src: ./website/
+        dest: /var/www/html/
+        owner: www-data
+        group: www-data
+        mode: '0644'
+        recurse: yes
