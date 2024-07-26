@@ -26,8 +26,8 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
-          chmod 600 ~/.ssh/id_ed25519
+          echo "${{ secrets.ANSIBLE_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519_no_passphrase
+          chmod 600 ~/.ssh/id_ed25519_no_passphrase
           ssh-keyscan nycgeek.social >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
