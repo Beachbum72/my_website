@@ -33,9 +33,7 @@ jobs:
         run: ssh-keyscan -H nycgeek.social >> ~/.ssh/known_hosts
 
       - name: Run Ansible Playbook
-        uses: actions/ansible-playbook@v2.1.1
-        with:
-          playbook: deploy.yml
-          inventory: inventory.ini
+        run: |
+          ansible-playbook -i inventory.ini deploy.yml -vvv
         env:
           ANSIBLE_HOST_KEY_CHECKING: 'false'
