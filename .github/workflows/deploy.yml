@@ -31,7 +31,13 @@ jobs:
 
       - name: Add remote server to known_hosts
         run: ssh-keyscan -H nycgeek.social >> ~/.ssh/known_hosts
-
+      
+      - name: Ensure project directory exists
+        run: mkdir -p /home/runner/my_project/my_website/
+  
+      - name: Copy project files
+        run: cp -r . /home/runner/my_project/my_website/
+     
       - name: Run Ansible Playbook
         run: |
           ansible-playbook -i inventory.ini deploy.yml -vvv
