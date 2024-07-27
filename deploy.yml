@@ -1,6 +1,10 @@
 - name: Deploy Personal Website
   hosts: nycgeek.social
   become: yes
+  become_method: sudo
+  vars:
+    ansible_ssh_private_key_file: ~/.ssh/id_ed25519_no_passphrase  # Update with the correct path to your private key
+
   tasks:
     - name: Ensure the destination directory exists
       file:
@@ -11,9 +15,12 @@
         mode: '0755'
 
     - name: Deploy website files
-      synchronize:
-        src: ./my_website/
+      ansible.posix.synchronize:
+        src: "~/my_project/my_website/"
         dest: /var/www/html/
+        archive: yes
+        delete: yes
         rsync_opts:
-          - "--chown=www-data:www-data"
+         - "--chown=www-data:www-data"
       delegate_to: localhost
+      become: no
