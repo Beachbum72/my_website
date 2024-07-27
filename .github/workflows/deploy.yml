@@ -26,7 +26,7 @@ jobs:
       - name: Set up SSH key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519_no_passphrase
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_ed25519_no_passphrase
           chmod 600 ~/.ssh/id_ed25519_no_passphrase
 
       - name: Add remote server to known_hosts
