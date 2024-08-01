@@ -36,7 +36,9 @@
        padding: 2rem 0;
        text-align: center;
    }
-
+   .profile-picture {
+    border-radius: 50%;
+  }
    .intro {
        background: #f4f4f4;
        padding: 4rem 0;
