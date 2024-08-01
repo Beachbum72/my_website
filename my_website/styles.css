@@ -1,81 +1,58 @@
- /* General Styles */
-   body {
-       font-family: 'Garamond', serif;
-       margin: 0;
-       padding: 0;
-       color: #333;
-       line-height: 1.6;
-       background: linear-gradient(to bottom, rgb(237, 240, 231) 0%, rgb(218, 243, 177) 100%);
-   }
+/* Enhanced General Styles */
+body {
+    font-family: 'Garamond', serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    line-height: 1.6;
+    background: linear-gradient(to bottom, #e0f7fa 0%, #80deea 100%);
+}
 
-   header {
-       background: #065f03;
-       color: #fff;
-       padding: 1rem 0;
-       font-family: 'Garamond', serif;
-   }
+header {
+    background: #00796b;
+    color: #fff;
+    padding: 1rem 0;
+    font-family: 'Garamond', serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-   nav ul {
-       list-style: none;
-       text-align: center;
-       padding: 0;
-       margin: 0;
-       font-family: 'Garamond', serif;
-   }
+/* Navigation Hover Effect */
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    font-family: 'Garamond', serif;
+    transition: color 0.3s;
+}
 
-   nav ul li {
-       display: inline;
-       margin: 0 1rem;
-       font-family: 'Garamond', serif;
-   }
+nav ul li a:hover {
+    color: #ffd600;
+}
 
-   nav ul li a {
-       color: #fff;
-       text-decoration: none;
-       font-weight: bold;
-       font-family: 'Garamond', serif;
-   }
+/* Section Styling */
+section {
+    padding: 2.5rem 0;
+    text-align: center;
+}
 
-   section {
-       padding: ..25rem 0;
-       text-align: center;
-   }
-   .profile-picture {
-       border-radius: 50%;
-       align-items: center;
-   }
-   .intro {
-       padding: 4rem 0;
-   }
+/* Image Styling */
+.profile-picture {
+    border-radius: 50%;
+    align-items: center;
+    transition: transform 0.3s;
+}
 
-   .intro h1 {
-       margin-bottom: 1rem;
-       font-family: 'Garamond', serif;
-   }
+.profile-picture:hover {
+    transform: scale(1.1);
+}
 
-   .intro p {
-       margin: 0;
-       font-size: 1.2rem;
-       font-family: 'Garamond', serif;
-   }
-
-   .content {
-       max-width: 800px;
-       margin: 0 auto;
-       font-family: 'Garamond', serif;
-   }
-
-   footer {
-       background: #805301b6;
-       color: #fff;
-       text-align: center;
-       padding: 1rem 4;
-       position: fixed;
-       bottom: 0;
-       width: 100%;
-       font-family: 'Garamond', serif;
-   }
-
-   footer p {
-       margin: 0;
-   }
+/* Footer Styling */
+footer {
+    background: #004d40;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+    font-family: 'Garamond', serif;
+}
