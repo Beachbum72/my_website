@@ -50,11 +50,13 @@
 
    .intro h1 {
        margin-bottom: 1rem;
+       font-family: 'Garamond', serif;
    }
 
    .intro p {
        margin: 0;
        font-size: 1.2rem;
+       font-family: 'Garamond', serif;
    }
 
    .content {
