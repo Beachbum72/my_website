@@ -5,6 +5,7 @@
        padding: 0;
        color: #333;
        line-height: 1.6;
+       background: linear-gradient(to bottom, rgb(237, 240, 231) 0%, rgb(218, 243, 177) 100%);
    }
 
    header {
@@ -44,7 +45,6 @@
        align-items: center;
    }
    .intro {
-       background: #f4f4f4;
        padding: 4rem 0;
    }
 
@@ -63,9 +63,6 @@
        max-width: 800px;
        margin: 0 auto;
        font-family: 'Garamond', serif;
-   }
-   .body {
-  background: linear-gradient(to bottom, rgb(237, 240, 231) 0%, rgb(218, 243, 177) 100%);
    }
 
    footer {
