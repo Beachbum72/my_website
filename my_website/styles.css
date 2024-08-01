@@ -36,7 +36,7 @@
    }
 
    section {
-       padding: 2rem 0;
+       padding: ..25rem 0;
        text-align: center;
    }
    .profile-picture {
@@ -64,12 +64,15 @@
        margin: 0 auto;
        font-family: 'Garamond', serif;
    }
+   .body {
+  background: linear-gradient(to bottom, rgb(237, 240, 231) 0%, rgb(218, 243, 177) 100%);
+   }
 
    footer {
        background: #805301b6;
        color: #fff;
        text-align: center;
-       padding: 1rem 0;
+       padding: 1rem 4;
        position: fixed;
        bottom: 0;
        width: 100%;
