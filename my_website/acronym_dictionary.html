@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Acronym Dictionary</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .search-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .search-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 50px 15px 20px;
+            font-size: 1.1rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        #searchInput:focus {
+            border-color: #4facfe;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(79, 172, 254, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+            font-size: 1.2rem;
+        }
+
+        .add-section {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr 2fr auto;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .input-group input {
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .input-group textarea {
+            padding: 12px 15px;
+            border: 2px solid #e1e8ed;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .input-group textarea:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .results-section {
+            padding: 30px;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .results-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .clear-btn {
+            background: #dc3545;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+        }
+
+        .clear-btn:hover {
+            box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+        }
+
+        .acronym-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .acronym-item {
+            background: white;
+            border: 1px solid #e1e8ed;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .acronym-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border-color: #4facfe;
+        }
+
+        .acronym-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .acronym-term {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #4facfe;
+            margin-bottom: 5px;
+        }
+
+        .acronym-short {
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .acronym-long {
+            font-size: 1rem;
+            color: #555;
+            line-height: 1.5;
+            padding-left: 15px;
+            border-left: 3px solid #e1e8ed;
+            margin-top: 5px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+
+        .edit-btn, .delete-btn {
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .edit-btn {
+            background: #28a745;
+        }
+
+        .edit-btn:hover {
+            background: #218838;
+            transform: scale(1.1);
+        }
+
+        .delete-btn {
+            background: #dc3545;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+            transform: scale(1.1);
+        }
+
+        .edit-form {
+            background: #f8f9fa;
+            border: 2px solid #4facfe;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 15px;
+        }
+
+        .edit-form-row {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .edit-form-row label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.9rem;
+        }
+
+        .edit-form-row input,
+        .edit-form-row textarea {
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .edit-form-row textarea {
+            resize: vertical;
+            min-height: 60px;
+            font-family: inherit;
+        }
+
+        .edit-form-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .edit-form-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .save-btn {
+            background: #28a745;
+            color: white;
+        }
+
+        .save-btn:hover {
+            background: #218838;
+        }
+
+        .cancel-btn {
+            background: #6c757d;
+            color: white;
+        }
+
+        .cancel-btn:hover {
+            background: #5a6268;
+        }
+
+        .delete-confirmation {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+
+        .delete-confirmation p {
+            margin: 0 0 10px 0;
+            color: #856404;
+            font-weight: 600;
+        }
+
+        .delete-confirmation-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #ffc107;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+        }
+
+        .delete-confirmation-input:focus {
+            outline: none;
+            border-color: #e0a800;
+        }
+
+        .delete-confirmation-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .confirm-delete-btn {
+            background: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .confirm-delete-btn:enabled {
+            opacity: 1;
+        }
+
+        .confirm-delete-btn:enabled:hover {
+            background: #c82333;
+        }
+
+        .cancel-delete-btn {
+            background: #6c757d;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .cancel-delete-btn:hover {
+            background: #5a6268;
+        }
+
+        .clear-all-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .clear-all-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .clear-all-content h3 {
+            color: #dc3545;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .clear-all-content p {
+            margin-bottom: 15px;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .clear-all-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .clear-all-input:focus {
+            outline: none;
+            border-color: #c82333;
+        }
+
+        .clear-all-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .clear-all-confirm {
+            background: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+
+        .clear-all-confirm:enabled {
+            opacity: 1;
+        }
+
+        .clear-all-confirm:enabled:hover {
+            background: #c82333;
+        }
+
+        .clear-all-cancel {
+            background: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .clear-all-cancel:hover {
+            background: #5a6268;
+        }
+
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .highlight {
+            background: #fff3cd;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .add-section {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                margin: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Acronym Dictionary</h1>
+            <p>Your organization's custom acronym reference</p>
+        </div>
+
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Search acronyms..." autocomplete="off">
+                <span class="search-icon">🔍</span>
+            </div>
+            
+            <div class="add-section">
+                <div class="input-group">
+                    <label for="acronymInput">Acronym</label>
+                    <input type="text" id="acronymInput" placeholder="e.g., API" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="shortDefinitionInput">Short Description</label>
+                    <input type="text" id="shortDefinitionInput" placeholder="e.g., Application Programming Interface" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="longDefinitionInput">Long Description</label>
+                    <textarea id="longDefinitionInput" placeholder="e.g., A set of protocols and tools that allows different software applications to communicate with each other..." rows="2"></textarea>
+                </div>
+                <button class="btn" onclick="addAcronym()">Add</button>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <div class="results-header">
+                <span class="results-count" id="resultsCount">0 acronyms</span>
+                <button class="btn clear-btn" onclick="clearAllAcronyms()">Clear All</button>
+            </div>
+            <div class="acronym-list" id="acronymList">
+                <div class="no-results">No acronyms found. Add some above!</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // In-memory storage for acronyms
+        let acronyms = [];
+        let editingIndex = -1;
+        let deletingIndex = -1;
+        let showClearAllModal = false;
+
+        // Load acronyms from memory or initialize with sample data
+        function initializeAcronyms() {
+            // Sample data to get started - replace with your organization's acronyms
+            acronyms = [
+                { 
+                    term: "API", 
+                    shortDefinition: "Application Programming Interface", 
+                    longDefinition: "A set of protocols, routines, and tools that allows different software applications to communicate with each other. APIs define the methods and data structures that applications can use to interact with external services or libraries."
+                },
+                { 
+                    term: "SLA", 
+                    shortDefinition: "Service Level Agreement", 
+                    longDefinition: "A formal contract between a service provider and customer that defines the level of service expected, including uptime guarantees, response times, and performance metrics. Violations may result in penalties or service credits."
+                },
+                { 
+                    term: "KPI", 
+                    shortDefinition: "Key Performance Indicator", 
+                    longDefinition: "Measurable values that demonstrate how effectively an organization is achieving key business objectives. KPIs help teams focus on what matters most and track progress toward strategic goals."
+                },
+                { 
+                    term: "ROI", 
+                    shortDefinition: "Return on Investment", 
+                    longDefinition: "A financial metric used to evaluate the efficiency and profitability of an investment. Calculated as (Gain from Investment - Cost of Investment) / Cost of Investment, typically expressed as a percentage."
+                },
+                { 
+                    term: "MVP", 
+                    shortDefinition: "Minimum Viable Product", 
+                    longDefinition: "A development approach where a new product is built with just enough features to satisfy early customers and provide feedback for future development. This strategy minimizes development time and costs while maximizing learning."
+                }
+            ];
+            displayAcronyms();
+        }
+
+        function addAcronym() {
+            const acronymInput = document.getElementById('acronymInput');
+            const shortDefinitionInput = document.getElementById('shortDefinitionInput');
+            const longDefinitionInput = document.getElementById('longDefinitionInput');
+            
+            const term = acronymInput.value.trim().toUpperCase();
+            const shortDefinition = shortDefinitionInput.value.trim();
+            const longDefinition = longDefinitionInput.value.trim();
+            
+            if (!term || !shortDefinition) {
+                alert('Please enter both acronym and short description');
+                return;
+            }
+            
+            // Check if acronym already exists
+            const existingIndex = acronyms.findIndex(a => a.term === term);
+            if (existingIndex !== -1) {
+                if (confirm('This acronym already exists. Do you want to update it?')) {
+                    acronyms[existingIndex].shortDefinition = shortDefinition;
+                    acronyms[existingIndex].longDefinition = longDefinition;
+                } else {
+                    return;
+                }
+            } else {
+                acronyms.push({ term, shortDefinition, longDefinition });
+            }
+            
+            // Clear inputs
+            acronymInput.value = '';
+            shortDefinitionInput.value = '';
+            longDefinitionInput.value = '';
+            
+            // Sort acronyms alphabetically
+            acronyms.sort((a, b) => a.term.localeCompare(b.term));
+            
+            displayAcronyms();
+            updateResultsCount();
+        }
+
+        function editAcronym(index) {
+            editingIndex = index;
+            displayAcronyms();
+        }
+
+        function saveEdit(index) {
+            const termInput = document.getElementById(`edit-term-${index}`);
+            const shortInput = document.getElementById(`edit-short-${index}`);
+            const longInput = document.getElementById(`edit-long-${index}`);
+            
+            const term = termInput.value.trim().toUpperCase();
+            const shortDefinition = shortInput.value.trim();
+            const longDefinition = longInput.value.trim();
+            
+            if (!term || !shortDefinition) {
+                alert('Please enter both acronym and short description');
+                return;
+            }
+            
+            // Check if acronym already exists (excluding current one)
+            const existingIndex = acronyms.findIndex((a, i) => a.term === term && i !== index);
+            if (existingIndex !== -1) {
+                alert('This acronym already exists');
+                return;
+            }
+            
+            acronyms[index] = { term, shortDefinition, longDefinition };
+            editingIndex = -1;
+            
+            // Sort acronyms alphabetically
+            acronyms.sort((a, b) => a.term.localeCompare(b.term));
+            
+            displayAcronyms();
+            updateResultsCount();
+        }
+
+        function cancelEdit() {
+            editingIndex = -1;
+            displayAcronyms();
+        }
+
+        function confirmDelete(index) {
+            deletingIndex = index;
+            displayAcronyms();
+        }
+
+        function deleteAcronym(index) {
+            const confirmInput = document.getElementById(`delete-confirm-${index}`);
+            if (confirmInput.value.toLowerCase() !== 'yes') {
+                return; // Button should be disabled, but just in case
+            }
+            
+            acronyms.splice(index, 1);
+            deletingIndex = -1;
+            displayAcronyms();
+            updateResultsCount();
+        }
+
+        function cancelDelete() {
+            deletingIndex = -1;
+            displayAcronyms();
+        }
+
+        function checkDeleteConfirmation(index) {
+            const confirmInput = document.getElementById(`delete-confirm-${index}`);
+            const deleteButton = document.getElementById(`delete-button-${index}`);
+            
+            if (confirmInput.value.toLowerCase() === 'yes') {
+                deleteButton.disabled = false;
+            } else {
+                deleteButton.disabled = true;
+            }
+        }
+
+        function showClearAllConfirmation() {
+            showClearAllModal = true;
+            displayClearAllModal();
+        }
+
+        function displayClearAllModal() {
+            const existingModal = document.getElementById('clearAllModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+
+            if (!showClearAllModal) return;
+
+            const modal = document.createElement('div');
+            modal.id = 'clearAllModal';
+            modal.className = 'clear-all-modal';
+            modal.innerHTML = `
+                <div class="clear-all-content">
+                    <h3>⚠️ Delete All Acronyms</h3>
+                    <p>This will permanently delete all <strong>${acronyms.length} acronyms</strong>. This action cannot be undone.</p>
+                    <p>Type <strong>"DELETE ALL"</strong> to confirm:</p>
+                    <input type="text" class="clear-all-input" id="clearAllConfirmInput" placeholder="Type DELETE ALL" autocomplete="off">
+                    <div class="clear-all-buttons">
+                        <button class="clear-all-cancel" onclick="hideClearAllModal()">Cancel</button>
+                        <button class="clear-all-confirm" id="clearAllConfirmButton" onclick="executeClearAll()" disabled>Delete All</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add event listener for input validation
+            const input = document.getElementById('clearAllConfirmInput');
+            const button = document.getElementById('clearAllConfirmButton');
+            
+            input.addEventListener('input', function() {
+                if (this.value === 'DELETE ALL') {
+                    button.disabled = false;
+                } else {
+                    button.disabled = true;
+                }
+            });
+
+            // Focus the input
+            setTimeout(() => input.focus(), 100);
+        }
+
+        function hideClearAllModal() {
+            showClearAllModal = false;
+            const modal = document.getElementById('clearAllModal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        function executeClearAll() {
+            const input = document.getElementById('clearAllConfirmInput');
+            if (input.value !== 'DELETE ALL') {
+                return; // Button should be disabled
+            }
+            
+            acronyms = [];
+            editingIndex = -1;
+            deletingIndex = -1;
+            hideClearAllModal();
+            displayAcronyms();
+            updateResultsCount();
+        }
+
+        function clearAllAcronyms() {
+            showClearAllConfirmation();
+        }
+
+        function highlightText(text, query) {
+            if (!query) return text;
+            const regex = new RegExp(`(${query})`, 'gi');
+            return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function displayAcronyms(filteredAcronyms = null) {
+            const acronymList = document.getElementById('acronymList');
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const displayList = filteredAcronyms || acronyms;
+            
+            if (displayList.length === 0) {
+                acronymList.innerHTML = '<div class="no-results">No acronyms found.</div>';
+                return;
+            }
+            
+            acronymList.innerHTML = displayList.map((acronym, index) => {
+                const actualIndex = acronyms.indexOf(acronym);
+                const isEditing = editingIndex === actualIndex;
+                const isDeleting = deletingIndex === actualIndex;
+                
+                if (isEditing) {
+                    return `
+                        <div class="acronym-item">
+                            <div class="edit-form">
+                                <div class="edit-form-row">
+                                    <label>Acronym</label>
+                                    <input type="text" id="edit-term-${actualIndex}" value="${acronym.term}">
+                                </div>
+                                <div class="edit-form-row">
+                                    <label>Short Description</label>
+                                    <input type="text" id="edit-short-${actualIndex}" value="${acronym.shortDefinition}">
+                                </div>
+                                <div class="edit-form-row">
+                                    <label>Long Description</label>
+                                    <textarea id="edit-long-${actualIndex}">${acronym.longDefinition || ''}</textarea>
+                                </div>
+                                <div class="edit-form-buttons">
+                                    <button class="cancel-btn" onclick="cancelEdit()">Cancel</button>
+                                    <button class="save-btn" onclick="saveEdit(${actualIndex})">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="acronym-item">
+                        <div class="acronym-header">
+                            <div>
+                                <div class="acronym-term">${highlightText(acronym.term, searchQuery)}</div>
+                                <div class="acronym-short">${highlightText(acronym.shortDefinition, searchQuery)}</div>
+                                ${acronym.longDefinition ? `<div class="acronym-long">${highlightText(acronym.longDefinition, searchQuery)}</div>` : ''}
+                            </div>
+                            <div class="action-buttons">
+                                <button class="edit-btn" onclick="editAcronym(${actualIndex})" title="Edit acronym">✏️</button>
+                                <button class="delete-btn" onclick="confirmDelete(${actualIndex})" title="Delete acronym">🗑️</button>
+                            </div>
+                        </div>
+                        ${isDeleting ? `
+                            <div class="delete-confirmation">
+                                <p>⚠️ Are you sure you want to delete "${acronym.term}"?</p>
+                                <p>Type <strong>"yes"</strong> to confirm:</p>
+                                <input type="text" class="delete-confirmation-input" id="delete-confirm-${actualIndex}" 
+                                       placeholder="Type yes" autocomplete="off" 
+                                       oninput="checkDeleteConfirmation(${actualIndex})">
+                                <div class="delete-confirmation-buttons">
+                                    <button class="cancel-delete-btn" onclick="cancelDelete()">Cancel</button>
+                                    <button class="confirm-delete-btn" id="delete-button-${actualIndex}" 
+                                            onclick="deleteAcronym(${actualIndex})" disabled>Delete</button>
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function searchAcronyms() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query) {
+                displayAcronyms();
+                updateResultsCount();
+                return;
+            }
+            
+            const filtered = acronyms.filter(acronym => 
+                acronym.term.toLowerCase().includes(query) || 
+                acronym.shortDefinition.toLowerCase().includes(query) ||
+                (acronym.longDefinition && acronym.longDefinition.toLowerCase().includes(query))
+            );
+            
+            displayAcronyms(filtered);
+            updateResultsCount(filtered.length);
+        }
+
+        function updateResultsCount(count = null) {
+            const resultsCount = document.getElementById('resultsCount');
+            const total = count !== null ? count : acronyms.length;
+            resultsCount.textContent = `${total} acronym${total !== 1 ? 's' : ''}`;
+        }
+
+        // Event listeners
+        document.getElementById('searchInput').addEventListener('input', searchAcronyms);
+        
+        // Allow Enter key to add acronym
+        document.getElementById('acronymInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addAcronym();
+        });
+        
+        document.getElementById('shortDefinitionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') addAcronym();
+        });
+
+        document.getElementById('longDefinitionInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) addAcronym(); // Ctrl+Enter for textarea
+        });
+
+        // Initialize the app
+        initializeAcronyms();
+    </script>
+</body>
+</html>
